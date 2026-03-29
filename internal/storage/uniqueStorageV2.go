@@ -1,11 +1,11 @@
-package uniquestr
+package storage
 
 import (
 	"sync"
 
-	"your_project/storage"
-
 	"unique"
+
+	"github.com/poseidon200500/course_work/storage"
 )
 
 type UniqueTag struct {
@@ -13,20 +13,20 @@ type UniqueTag struct {
 	str string
 }
 
-type Storage struct {
+type UniqueStorageV2 struct {
 	mu sync.RWMutex
 
 	data          []UniqueTag
 	totalInserted int
 }
 
-func NewStorage() *Storage {
-	return &Storage{
+func NewUniqueStorageV2() *Storage {
+	return &UniqueStorageV2{
 		data: make([]UniqueTag, 0),
 	}
 }
 
-func (s *Storage) Add(str string) {
+func (s *UniqueStorageV2) Add(str string) {
 	h := unique.Make(str)
 
 	tag := UniqueTag{
@@ -40,7 +40,7 @@ func (s *Storage) Add(str string) {
 	s.mu.Unlock()
 }
 
-func (s *Storage) GetAll() []string {
+func (s *UniqueStorageV2) GetAll() []string {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
@@ -51,7 +51,7 @@ func (s *Storage) GetAll() []string {
 	return result
 }
 
-func (s *Storage) Stats() storage.Stats {
+func (s *UniqueStorageV2) Stats() Stats {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
@@ -66,7 +66,7 @@ func (s *Storage) Stats() storage.Stats {
 	}
 }
 
-func (s *Storage) Reset() {
+func (s *UniqueStorageV2) Reset() {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 

@@ -5,20 +5,20 @@ import (
 	"unique"
 )
 
-type Storage struct {
+type UniqueStorageV1 struct {
 	mu sync.RWMutex
 
 	data          []unique.Handle[string]
 	totalInserted int
 }
 
-func NewStorage() *Storage {
-	return &Storage{
+func NewUniqueStorageV1() *Storage {
+	return &UniqueStorageV1{
 		data: make([]unique.Handle[string], 0),
 	}
 }
 
-func (s *Storage) Add(str string) {
+func (s *UniqueStorageV1) Add(str string) {
 	h := unique.Make(str)
 
 	s.mu.Lock()
@@ -27,7 +27,7 @@ func (s *Storage) Add(str string) {
 	s.mu.Unlock()
 }
 
-func (s *Storage) GetAll() []string {
+func (s *UniqueStorageV1) GetAll() []string {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
@@ -38,7 +38,7 @@ func (s *Storage) GetAll() []string {
 	return result
 }
 
-func (s *Storage) Stats() Stats {
+func (s *UniqueStorageV1) Stats() Stats {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
@@ -54,7 +54,7 @@ func (s *Storage) Stats() Stats {
 	}
 }
 
-func (s *Storage) Reset() {
+func (s *UniqueStorageV1) Reset() {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 

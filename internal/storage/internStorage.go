@@ -11,7 +11,7 @@ type InternStorage struct {
 	totalInserted int
 }
 
-func NewStorage() *Storage {
+func NewInternStorage() *Storage {
 	return &InternStorage{
 		pool: make(map[string]string),
 		data: make([]string, 0),

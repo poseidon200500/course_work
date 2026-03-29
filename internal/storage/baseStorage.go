@@ -4,28 +4,28 @@ import (
 	"sync"
 )
 
-type Storage struct {
+type BaseStorage struct {
 	mu sync.RWMutex
 
 	data          []string
 	totalInserted int
 }
 
-func NewStorage() *Storage {
-	return &Storage{
+func NewBaseStorage() *Storage {
+	return &BaseStorage{
 		data: make([]string, 0),
 	}
 }
 
 // Add — просто добавляем строку без оптимизации
-func (s *Storage) Add(str string) {
+func (s *BaseStorage) Add(str string) {
 	s.mu.Lock()
 	s.data = append(s.data, str)
 	s.totalInserted++
 	s.mu.Unlock()
 }
 
-func (s *Storage) GetAll() []string {
+func (s *BaseStorage) GetAll() []string {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
@@ -34,7 +34,7 @@ func (s *Storage) GetAll() []string {
 	return result
 }
 
-func (s *Storage) Stats() Stats {
+func (s *BaseStorage) Stats() Stats {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
@@ -44,7 +44,7 @@ func (s *Storage) Stats() Stats {
 	}
 }
 
-func (s *Storage) Reset() {
+func (s *BaseStorage) Reset() {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
