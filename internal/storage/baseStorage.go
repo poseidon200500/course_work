@@ -11,7 +11,7 @@ type BaseStorage struct {
 	totalInserted int
 }
 
-func NewBaseStorage() *Storage {
+func NewBaseStorage() Storage {
 	return &BaseStorage{
 		data: make([]string, 0),
 	}

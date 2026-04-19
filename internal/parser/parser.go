@@ -41,3 +41,31 @@ func ParseData(filepath string) ([]string, error) {
 
 	return result, nil
 }
+
+func ParseDataStream(filename string, handler func(string)) error {
+	file, err := os.Open(filename)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	buf := make([]byte, 0, 1024*1024)
+	scanner.Buffer(buf, 10*1024*1024)
+
+	for scanner.Scan() {
+		line := scanner.Text()
+		if line == "" {
+			continue
+		}
+
+		words := strings.Split(line, ",")
+		for _, w := range words {
+			if w != "" {
+				handler(w)
+			}
+		}
+	}
+
+	return scanner.Err()
+}

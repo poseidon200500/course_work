@@ -12,7 +12,7 @@ type UniqueStorageV1 struct {
 	totalInserted int
 }
 
-func NewUniqueStorageV1() *Storage {
+func NewUniqueStorageV1() Storage {
 	return &UniqueStorageV1{
 		data: make([]unique.Handle[string], 0),
 	}

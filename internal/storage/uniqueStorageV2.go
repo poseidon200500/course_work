@@ -2,10 +2,7 @@ package storage
 
 import (
 	"sync"
-
 	"unique"
-
-	"github.com/poseidon200500/course_work/storage"
 )
 
 type UniqueTag struct {
@@ -20,7 +17,7 @@ type UniqueStorageV2 struct {
 	totalInserted int
 }
 
-func NewUniqueStorageV2() *Storage {
+func NewUniqueStorageV2() Storage {
 	return &UniqueStorageV2{
 		data: make([]UniqueTag, 0),
 	}
@@ -60,7 +57,7 @@ func (s *UniqueStorageV2) Stats() Stats {
 		set[t.str] = struct{}{}
 	}
 
-	return storage.Stats{
+	return Stats{
 		TotalInserted: s.totalInserted,
 		UniqueCount:   len(set),
 	}
